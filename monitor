@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Security Monitor Launcher
+# Handles venv creation and activation automatically
+
+VENV_DIR="$HOME/.security_monitor_venv"
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+SCRIPT_NAME="security_monitor.py"
+
+# Check if virtual environment exists
+if [ ! -d "$VENV_DIR" ]; then
+    echo "[SETUP] First-time initialization: Creating virtual environment..."
+    python3 -m venv "$VENV_DIR"
+    
+    echo "[SETUP] Installing dependencies..."
+    "$VENV_DIR/bin/pip" install --quiet opencv-python numpy
+    
+    echo "[SETUP] Installation complete"
+    echo ""
+fi
+
+# Run the security monitor
+exec "$VENV_DIR/bin/python" "$SCRIPT_DIR/$SCRIPT_NAME"
