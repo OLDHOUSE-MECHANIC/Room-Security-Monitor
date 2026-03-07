@@ -23,7 +23,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configurable recording quality
 
 ### Fixed
-- issues box is open
-
-### Changed
-- Improved motion detection sensitivity
+- Issues are now open for all the contributors out there
