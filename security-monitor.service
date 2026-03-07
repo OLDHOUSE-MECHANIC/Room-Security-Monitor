@@ -1,0 +1,34 @@
+# Systemd service file for Room Security Monitor
+# This allows the monitor to start automatically on boot
+
+# Installation:
+# 1. Copy this file to ~/.config/systemd/user/security-monitor.service
+# 2. Edit paths to match your installation
+# 3. Enable: systemctl --user enable security-monitor.service
+# 4. Start: systemctl --user start security-monitor.service
+# 5. Check status: systemctl --user status security-monitor.service
+
+[Unit]
+Description=Room Security Monitor
+After=network.target
+
+[Service]
+Type=simple
+# Change this path to where you installed the monitor script
+ExecStart=/home/YOUR_USERNAME/.local/bin/monitor
+# Or use full path: /home/YOUR_USERNAME/room-security-monitor/monitor
+
+# Restart on failure
+Restart=on-failure
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+PrivateTmp=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target
