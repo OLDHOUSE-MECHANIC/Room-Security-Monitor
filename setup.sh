@@ -78,6 +78,7 @@ if [ -d "$VENV_DIR" ]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         rm -rf "$VENV_DIR"
         echo "[SYSTEM] Removed old virtual environment"
+        SKIP_VENV=false
     else
         echo "[SYSTEM] Keeping existing virtual environment"
         SKIP_VENV=true
@@ -91,10 +92,17 @@ if [ "$SKIP_VENV" != "true" ]; then
     
     echo "[SETUP] Installing dependencies..."
     "$VENV_DIR/bin/pip" install --quiet --upgrade pip
-    "$VENV_DIR/bin/pip" install --quiet opencv-python numpy
+    "$VENV_DIR/bin/pip" install opencv-python numpy
     echo "[OK] Dependencies installed"
 else
     echo "[OK] Using existing virtual environment"
+    
+    # Verify opencv is installed, install if missing
+    if ! "$VENV_DIR/bin/python" -c "import cv2" 2>/dev/null; then
+        echo "[SETUP] OpenCV not found, installing..."
+        "$VENV_DIR/bin/pip" install opencv-python numpy
+        echo "[OK] Dependencies installed"
+    fi
 fi
 echo ""
 
@@ -116,7 +124,16 @@ if "$VENV_DIR/bin/python" -c "import cv2; print('OpenCV', cv2.__version__)" 2>/d
     echo "[OK] OpenCV operational"
 else
     echo "[ERROR] OpenCV verification failed"
-    exit 1
+    echo "[INFO] Installing opencv-python..."
+    "$VENV_DIR/bin/pip" install opencv-python numpy
+    
+    # Final check
+    if "$VENV_DIR/bin/python" -c "import cv2" 2>/dev/null; then
+        echo "[OK] OpenCV operational"
+    else
+        echo "[ERROR] Installation failed"
+        exit 1
+    fi
 fi
 echo ""
 
