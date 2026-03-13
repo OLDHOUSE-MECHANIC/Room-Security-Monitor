@@ -1,22 +1,59 @@
 #!/bin/bash
 
 # Security Monitor Launcher
-# Handles venv creation and activation automatically
+# Handles venv dynamically - uses active venv or creates own
 
-VENV_DIR="$HOME/.security_monitor_venv"
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_NAME="security_monitor.py"
 
-# Check if virtual environment exists
+# Function to check if opencv is available
+check_opencv() {
+    "$1" -c "import cv2" 2>/dev/null
+    return $?
+}
+
+# Check if already in a virtual environment with opencv
+if [ -n "$VIRTUAL_ENV" ]; then
+    if check_opencv "python"; then
+        # Active venv has opencv, use it
+        exec python "$SCRIPT_DIR/$SCRIPT_NAME"
+    else
+        # Active venv doesn't have opencv, install it
+        echo "[SETUP] Installing opencv-python in active environment..."
+        pip install opencv-python numpy
+        exec python "$SCRIPT_DIR/$SCRIPT_NAME"
+    fi
+fi
+
+# Not in a venv, use our own
+VENV_DIR="$HOME/.security_monitor_venv"
+
+# Create venv if needed
 if [ ! -d "$VENV_DIR" ]; then
     echo "[SETUP] First-time initialization: Creating virtual environment..."
     python3 -m venv "$VENV_DIR"
     
-    echo "[SETUP] Installing dependencies..."
-    "$VENV_DIR/bin/pip" install --quiet opencv-python numpy
+    echo "[SETUP] Installing dependencies (this may take a minute)..."
+    "$VENV_DIR/bin/pip" install --upgrade pip
+    "$VENV_DIR/bin/pip" install opencv-python numpy
     
     echo "[SETUP] Installation complete"
     echo ""
+fi
+
+# Verify opencv is installed, reinstall if missing
+if ! check_opencv "$VENV_DIR/bin/python"; then
+    echo "[SETUP] Installing opencv-python..."
+    "$VENV_DIR/bin/pip" install opencv-python numpy
+    
+    # Final check
+    if ! check_opencv "$VENV_DIR/bin/python"; then
+        echo "[ERROR] OpenCV installation failed"
+        echo "[INFO] Manual fix:"
+        echo "       rm -rf ~/.security_monitor_venv"
+        echo "       ./monitor"
+        exit 1
+    fi
 fi
 
 # Run the security monitor
