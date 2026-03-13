@@ -52,4 +52,4 @@ if errorlevel 1 (
 )
 
 REM Run the security monitor
-"%VENV_DIR%\Scripts\python" "%SCRIPT_DIR%%SCRIPT_NAME%"=%~
+"%VENV_DIR%\Scripts\python" "%SCRIPT_DIR%%SCRIPT_NAME%"
