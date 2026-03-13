@@ -48,6 +48,7 @@ if [ -d "$VENV_DIR" ]; then
     test_pass "Virtual environment exists"
 else
     test_fail "Virtual environment not found at $VENV_DIR"
+    echo "        Run: ./setup.sh"
 fi
 echo ""
 
@@ -59,6 +60,13 @@ if [ -d "$VENV_DIR" ]; then
         test_pass "OpenCV $CV2_VERSION installed"
     else
         test_fail "OpenCV not found in virtual environment"
+        echo "        Fixing: Installing opencv-python..."
+        "$VENV_DIR/bin/pip" install opencv-python numpy >/dev/null 2>&1
+        if "$VENV_DIR/bin/python" -c "import cv2" 2>/dev/null; then
+            test_pass "OpenCV installed successfully"
+        else
+            echo "        Run: ./setup.sh"
+        fi
     fi
 else
     test_warn "Skipped (no virtual environment)"
@@ -73,6 +81,7 @@ if [ -d "$VENV_DIR" ]; then
         test_pass "NumPy $NUMPY_VERSION installed"
     else
         test_fail "NumPy not found in virtual environment"
+        echo "        Run: ./setup.sh"
     fi
 else
     test_warn "Skipped (no virtual environment)"
@@ -115,6 +124,7 @@ if [ -f "monitor" ]; then
         test_pass "monitor is executable"
     else
         test_fail "monitor is not executable"
+        echo "        Run: chmod +x monitor"
     fi
 else
     test_fail "monitor launcher not found"
