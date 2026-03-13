@@ -23,7 +23,7 @@ A Python-based motion detection security system that uses your laptop's webcam t
 ## Quick Start
 
 ```bash
-git clone https://github.com/yourusername/room-security-monitor.git
+git clone https://github.com/OLDHOUSE-MECHANIC/Room-Security-Monitor.git
 cd room-security-monitor
 chmod +x setup.sh && ./setup.sh  # Linux/macOS
 ./monitor                        # Start monitoring
