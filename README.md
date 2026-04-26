@@ -1,7 +1,17 @@
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green)
+![Platform](https://img.shields.io/badge/Platform-Linux%20|%20macOS%20|%20Windows-lightgrey)
+![License](https://img.shields.io/badge/License-Apache%202.0-orange)
 # Room Security Monitor
 
 A Python-based motion detection security system that uses your laptop's webcam to monitor your room and automatically record when motion is detected. Because sometimes you really need to know who ate your leftovers.
 
+<img width="800" height="450" alt="Demo" src="https://github.com/user-attachments/assets/e4021a47-d15d-414e-a7f0-23ca8113cc15" />
+
+## Why I Built This?
+Built this after leaving my room in a rush one too many times and coming back wondering if anyone had been inside. Wanted something simple, local, and zero-dependency on cloud services.
+
+--- 
 ## Features
 
 - **Automatic Motion Detection**: Uses OpenCV background subtraction
@@ -111,6 +121,12 @@ All recordings stored locally. No cloud, no network. For monitoring **your prope
 
 Apache 2 License - See LICENSE file
 
----
 
 **Legal Disclaimer**: For personal security on your own property only. Users responsible for compliance with surveillance laws.
+
+
+## Ending Note
+
+This project evolved into SENTRY — a full local AI vision intelligence platform. Coming soon.
+
+---
