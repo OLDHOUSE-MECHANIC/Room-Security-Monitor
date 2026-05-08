@@ -12,25 +12,21 @@ A Python-based motion detection security system that uses your laptop's webcam t
 Built this after leaving my room in a rush one too many times and coming back wondering if anyone had been inside. Wanted something simple, local, and zero-dependency on cloud services.
 
 --- 
-## Features
+## What It Does
 
-- **Automatic Motion Detection**: Uses OpenCV background subtraction
-- **Silent Recording**: Records when motion is detected  
-- **Timestamped Files**: Each recording saved with timestamp
-- **Continuous Monitoring**: Keeps watching between recordings
-- **Multiple Intrusions**: Separate file for each person
-- **Stealth Mode**: Runs without displaying video feed
-- **Auto-Setup**: Launcher handles venv and dependencies
-- **Cross-Platform**: Works on Linux, macOS, and Windows
+Watches your room. Records when something moves. Stops when it doesn't. That's pretty much it.
 
-## Requirements
+Each recording gets its own timestamped file so you know exactly when things happened. Runs completely silent — no window, no feed, nothing visible. Just quietly doing its job in the background while you're away.
 
-- **OS**: Linux, macOS, or Windows
-- **Python**: 3.8+
-- **Camera**: Working webcam
-- **Disk Space**: 1GB+ recommended
+Oh and it sets itself up too. Run the launcher and it handles the venv and dependencies on its own.
 
-## Quick Start
+## What You Need (already picked out the minimum checks!)
+
+- Python 3.8+ (Yes! not 3.7)
+- A webcam that works
+- ~1GB of free space for footage
+
+## Jump-Start
 
 ```bash
 git clone https://github.com/OLDHOUSE-MECHANIC/Room-Security-Monitor.git
@@ -39,9 +35,9 @@ chmod +x setup.sh && sudo ./setup.sh  # Linux/macOS
 ./monitor                        # Start monitoring
 ```
 
-## Configuration
+## Want to make it your own? - Config Guide
 
-Edit `security_monitor.py`:
+Edit `security_monitor.py` if you want to tweak things:
 
 ```python
 monitor = RoomSecurityMonitor(
@@ -51,7 +47,7 @@ monitor = RoomSecurityMonitor(
 monitor.start_monitoring(show_feed=False)  # Stealth mode
 ```
 
-## Usage
+## Controls
 
 | Command | Action |
 |---------|--------|
@@ -66,14 +62,11 @@ monitor.start_monitoring(show_feed=False)  # Stealth mode
 4. Person leaves → 5. 10 seconds pass → Recording stops → 6. Back to monitoring  
 7. Another person → New recording → Repeat
 
-## Recordings
+## Footage
 
-- **Location**: `security_footage/`
-- **Format**: `.avi` files
-- **Naming**: `motion_YYYYMMDD_HHMMSS.avi`
-- **Size**: ~50-100 MB per minute
+Goes into `security_footage/` as `.avi` files — named `motion_YYYYMMDD_HHMMSS.avi` so you can tell at a glance when something happened. Each recording is roughly 50–100 MB per minute so keep an eye on disk space if you're running it overnight.
 
-## Troubleshooting
+## Something Not Working?
 
 **Camera not found (Linux)**:
 ```bash
@@ -81,49 +74,34 @@ ls -l /dev/video*
 sudo usermod -a -G video $USER  # Log out and back in
 ```
 
-**Module not found**:
+**Module not found** — the venv probably got corrupted somehow:
 ```bash
 rm -rf ~/.security_monitor_venv
 ./monitor  # Recreates automatically
 ```
 
-**Adjust sensitivity**:
+**Too sensitive / not sensitive enough**:
 ```python
-min_area=500   # Very sensitive
-min_area=800   # Normal (default)
-min_area=1500  # Less sensitive
+min_area=500   # Picks up everything, including your fan probably
+min_area=800   # Default, works fine for most rooms
+min_area=1500  # Only reacts to actual people walking in
 ```
 
-## Platform-Specific Notes
+**macOS**: give it camera permissions in System Preferences or it won't see anything.  
+**Windows**: same deal, check camera permissions in Settings.  
+**Linux**: tested mostly on Arch, but works on Ubuntu/Debian/Fedora too.
 
-**Linux**: Optimized for Arch, works on Ubuntu/Debian/Fedora  
-**macOS**: Grant camera permissions in System Preferences  
-**Windows**: Ensure camera permissions enabled in Settings
+## Docs
 
-## Performance
-
-- CPU: 15-30% of one core
-- RAM: 100-200 MB
-- Battery: Keep plugged in
-
-## Documentation
-
-- **INSTALL.md** - Detailed installation
-- **QUICKREF.md** - Quick reference
-- **CONTRIBUTING.md** - How to contribute
-- **config_example.py** - Configuration options
+`INSTALL.md` · `QUICKREF.md` · `CONTRIBUTING.md` · `config_example.py`
 
 ## Privacy
 
-All recordings stored locally. No cloud, no network. For monitoring **your property only**. Respect privacy laws.
+All footage stays on your machine. No uploads, no cloud, nothing leaves your disk. Built this for my own room — if you're using it, make sure you're doing the same and that you're not breaking any local laws about recording people. I'm already tired of writing down these extra pieces of documentation. please ignore any typos.
 
 ## License
 
-Apache 2 License - See LICENSE file
-
-
-**Legal Disclaimer**: For personal security on your own property only. Users responsible for compliance with surveillance laws.
-
+Apache 2.0 — see LICENSE
 
 ## Ending Note
 
